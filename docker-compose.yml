@@ -1,0 +1,65 @@
+version: '3.9'
+
+services:
+  user-service:
+    build:
+      context: ./service/user-service
+      dockerfile: Dockerfile
+    container_name: user-service
+    ports:
+      - "8001:8080"
+    environment:
+      - GOPROXY=https://goproxy.cn,direct
+    networks:
+      - backend
+
+  product-service:
+    build:
+      context: ./service/product-service
+      dockerfile: Dockerfile
+    container_name: product-service
+    ports:
+      - "8002:8000"
+    environment:
+      - DB_URL=postgresql://user:password@postgres:5432/ecommerce
+    depends_on:
+      - postgres
+    networks:
+      - backend
+
+  postgres:
+    image: postgres:15
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: ecommerce
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - backend
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    networks:
+      - backend
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    networks:
+      - backend
+
+volumes:
+  pgdata:
+
+networks:
+  backend:
+    driver: bridge
+
