@@ -40,7 +40,7 @@ jobs:
         with:
           host: ${{ secrets.SERVER_IP }}
           username: root
-          key: ${{ secrets.SERVER_SSH_KEY }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd /root/projects/ecommerce-platform
             docker pull frey547/ecommerce-platform-product-service:latest
