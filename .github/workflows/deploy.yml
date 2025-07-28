@@ -45,6 +45,6 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd /root/projects/ecommerce-platform
-            #docker pull frey547/ecommerce-platform-product-service:latest
-            #docker-compose up -d --no-build product-service
+            docker pull frey547/ecommerce-platform-product-service:latest
+            docker-compose up -d --no-build product-service
 
